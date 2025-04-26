@@ -1,0 +1,19 @@
+/* src/pages/Home.css */
+.home-page {
+    min-height: 100vh;
+    background-color: #111;
+    padding-bottom: 40px;
+  }
+  
+  .hero-section {
+    padding-top: 80px;
+  }
+  
+  .features-section {
+    margin-top: 60px;
+  }
+  
+  .features-section div {
+    max-width: 250px;
+  }
+  
