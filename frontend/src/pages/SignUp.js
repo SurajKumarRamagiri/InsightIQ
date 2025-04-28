@@ -1,31 +1,76 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function SignUp() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // for redirecting after signup
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:5000/api/auth/signup', {
+        name,
+        email,
+        password,
+      });
+      alert("Signup successful! Please login.");
+      navigate('/login'); // redirecting to login page after signup
+    } catch (error) {
+      alert(error.response.data.msg || "Signup failed.");
+    }
+  };
+
   return (
     <div className="container mt-5 d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
       <div className="card p-4 shadow" style={{ width: "100%", maxWidth: "550px" }}>
         <h2 className="text-center mb-4">Sign Up</h2>
-        <form>
+        <form onSubmit={handleSignUp}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Name <span className="text-danger">*</span>
             </label>
-            <input type="text" className="form-control" id="name" required placeholder="Enter your name" />
+            <input 
+              type="text" 
+              className="form-control" 
+              id="name" 
+              required 
+              placeholder="Enter your name" 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
 
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email <span className="text-danger">*</span>
             </label>
-            <input type="email" className="form-control" id="email" required placeholder="Enter your email" />
+            <input 
+              type="email" 
+              className="form-control" 
+              id="email" 
+              required 
+              placeholder="Enter your email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password <span className="text-danger">*</span>
             </label>
-            <input type="password" className="form-control" id="password" required placeholder="Enter your password" />
+            <input 
+              type="password" 
+              className="form-control" 
+              id="password" 
+              required 
+              placeholder="Enter your password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
           <div className="d-grid">
