@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaBars, FaSearch, FaBookOpen, FaTimes } from 'react-icons/fa';
-import { Line } from 'react-chartjs-2';
+import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaCog, FaBars,FaSearch, FaBookOpen, FaTimes ,FaArrowRight ,FaSun,FaMoon} from 'react-icons/fa';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import { Link } from 'react-router-dom'; // For navigation
@@ -49,8 +48,11 @@ const Dashboard = () => {
     { label: 'Quizzes', icon: <FaQuestionCircle />, path: '/quizzes' },
     { label: 'Flashcards', icon: <FaBookOpen />, path: '/flashcards' },
     { label: 'Portfolio', icon: <FaUserCircle />, path: '/portfolio' },
-    { label: 'Settings', icon: <FaBars />, path: '/settings' }
+    { label: 'Settings', icon: <FaCog />, path: '/settings' }
   ];
+
+  // Icon size logic based on sidebar state (collapsed or expanded)
+  const iconSize = sidebarOpen ? 30 : 20;
 
   return (
     <div className={`d-flex min-vh-100 ${darkMode ? 'bg-dark text-white' : 'bg-light text-dark'}`}>
@@ -82,8 +84,8 @@ const Dashboard = () => {
             {menuItems.map((item, i) => (
               <li className="nav-item mb-3" key={i}>
                 <Link to={item.path} className="nav-link text-white hover-effect d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-                  {item.icon}
-                  {sidebarOpen && <span>{item.label}</span>}
+                  {React.cloneElement(item.icon, { size: iconSize })}
+                  <span className={`menu-item-label ${sidebarOpen ? 'd-inline' : 'd-none'}`}>{item.label}</span> {/* Show label only when expanded */}
                 </Link>
               </li>
             ))}
@@ -94,21 +96,24 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-grow-1 p-4">
         
-        {/* Header */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div>
-            <h1 className="fw-bold text-primary" style={{ fontSize: '3rem' }}>InsightIQ Dashboard</h1>
-            <p className="text-muted" style={{ fontSize: '1.25rem' }}>Transforming reading into active learning</p>
-          </div>
-          <button className="btn btn-danger rounded-pill px-4" onClick={handleLogout}>Logout</button>
-        </div>
+{/* Header */}
+<div className="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 className="fw-bold text-primary" style={{ fontSize: '3rem' }}>InsightIQ Dashboard</h1>
+    <p className="text-muted" style={{ fontSize: '1.25rem' }}>Transforming reading into active learning</p>
+  </div>
 
-        {/* Dark Mode */}
-        <div className="d-flex justify-content-end mb-4">
-          <button className="btn btn-outline-secondary rounded-pill" onClick={() => setDarkMode(!darkMode)}>
-            Toggle Dark Mode
-          </button>
-        </div>
+  {/* Dark Mode & Logout Buttons */}
+  <div className="d-flex gap-3">
+    <button className="btn btn-outline-secondary rounded-pill" onClick={() => setDarkMode(!darkMode)}>
+      {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+    </button>
+    <button className="btn btn-danger rounded-pill px-4" onClick={handleLogout}>
+      Logout
+    </button>
+  </div>
+</div>
+
 
         {/* Stats */}
         <div className="row g-4 mb-4">
@@ -117,13 +122,63 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Chart */}
-        <div className="card shadow-lg p-4 mb-4 rounded-4">
-          <h5 className="fw-bold mb-3">Learning Progress</h5>
-          <div style={{ height: '200px' }}>
-            <Line data={chartData} />
-          </div>
+{/* Learning Progress Card */}
+<div className="card shadow-lg p-4 mb-4 rounded-4">
+  <h5 className="fw-bold mb-3">📚 Current Learning Progress</h5>
+
+  {/* Topic Name */}
+  <h6 className="fw-bold text-primary mb-2">Introduction to Machine Learning</h6>
+
+  {/* Description + Progress */}
+  <div className="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    
+    {/* Description */}
+    <p className="text-muted mb-0 me-3 flex-grow-1">
+      Learn core ML concepts like supervised, unsupervised learning, and key algorithms.
+    </p>
+
+    {/* Progress Bar */}
+    <div style={{ minWidth: '200px' }}>
+      <div className="progress" style={{ height: '15px' }}>
+        <div
+          className="progress-bar bg-success"
+          role="progressbar"
+          style={{ width: '45%' }}
+          aria-valuenow="45"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
         </div>
+        {/* Percentage Text */}
+    <span className="ms-2 fw-bold text-success">45%</span>
+      </div>
+    </div>
+
+  </div>
+
+  {/* Stats + Button Row */}
+  <div className="d-flex flex-wrap align-items-center justify-content-between">
+    
+    {/* Badges */}
+    <div className="d-flex flex-wrap gap-3">
+      <span className="badge bg-primary bg-opacity-10 text-primary p-2 rounded-3">
+        📝 Quizzes: 2/5
+      </span>
+      <span className="badge bg-info bg-opacity-10 text-info p-2 rounded-3">
+        🃏 Flashcards: 10/20
+      </span>
+      <span className="badge bg-warning bg-opacity-10 text-warning p-2 rounded-3">
+        ⏱️ ETA: 30 mins
+      </span>
+    </div>
+
+    {/* Continue Button */}
+    <button className="btn btn-primary rounded-pill px-4 mt-3 mt-md-0 d-flex align-items-center gap-2">
+      Continue <FaArrowRight />
+    </button>
+
+  </div>
+</div>
 
         {/* Search */}
         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -179,6 +234,15 @@ const Dashboard = () => {
           color: #f8f9fa !important;
           transform: translateX(5px);
           transition: 0.2s;
+        }
+        .menu-item-label {
+          transition: opacity 0.2s ease;
+        }
+        .sidebar.collapsed .menu-item-label {
+          opacity: 0;
+        }
+        .sidebar.expanded .menu-item-label {
+          opacity: 1;
         }
       `}</style>
     </div>
