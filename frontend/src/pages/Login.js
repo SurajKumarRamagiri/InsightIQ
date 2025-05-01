@@ -10,12 +10,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      // Send the login request to your backend API
       await axios.post('http://localhost:5000/api/auth/login', {
         email,
         password,
       });
+
       alert("Login successful!");
-      navigate('/dashboard'); // ✅ You can change '/dashboard' to your actual page
+      navigate('/dashboard'); // Redirect to dashboard on successful login
     } catch (error) {
       alert(error.response.data.msg || "Login failed.");
     }
