@@ -11,18 +11,6 @@ const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [chartData, setChartData] = useState({
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    datasets: [
-      {
-        label: 'Study Progress',
-        data: [20, 40, 60, 80, 100, 75, 90],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }
-    ]
-  });
 
   const stats = [
     { label: 'Documents', value: 12, color: 'primary' },
