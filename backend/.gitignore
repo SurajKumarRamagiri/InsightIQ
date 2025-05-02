@@ -1,23 +1,44 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Node modules
+node_modules/
+
+# Environment variables
 .env
-# dependencies
-node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Optional npm cache
+.npm/
+
+# VS Code settings
+.vscode/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Svelte / Vite
+.svelte-kit/
+vite.config.ts
+
+# Others (optional, common tools)
+.idea/
+*.swp
+*.swo
