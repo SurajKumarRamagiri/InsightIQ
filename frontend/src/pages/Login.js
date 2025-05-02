@@ -22,10 +22,26 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSuccess = (response) => {
-    console.log('Google login success:', response);
-    // Handle Google login success (e.g., send token to backend)
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const token = credentialResponse.credential;
+  
+      const res = await axios.post('http://localhost:5000/api/auth/google-login', { token });
+  
+      console.log('User from server:', res.data.user);
+  
+      // Optional: Save user _id for session reference
+      localStorage.setItem('userId', res.data.user._id);
+  
+      window.location.href = '/dashboard';
+  
+    } catch (err) {
+      console.error(err);
+      alert('Google login failed');
+    }
   };
+  
 
   const handleGoogleFailure = (error) => {
     console.log('Google login error:', error);
@@ -105,16 +121,19 @@ const Login = () => {
         </div>
 
         {/* Google Login */}
-        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleFailure}
-            width="100%"
-            size="large"
-            text="continue_with"
-            theme="outline"
-          />
+        <GoogleOAuthProvider clientId="564151031047-6r1gp0202r6u4afkhffi29qt28kabi1t.apps.googleusercontent.com">
+          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleFailure}
+              size="large"
+              text="continue_with"
+              theme="outline"
+              ux_mode="popup"
+            />
+          </div>
         </GoogleOAuthProvider>
+
       </div>
     </div>
   );
