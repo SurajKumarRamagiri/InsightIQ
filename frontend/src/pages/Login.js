@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,23 +11,51 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Send the login request to your backend API
       await axios.post('http://localhost:5000/api/auth/login', {
         email,
         password,
       });
-
       alert("Login successful!");
       navigate('/dashboard'); // Redirect to dashboard on successful login
     } catch (error) {
-      alert(error.response.data.msg || "Login failed.");
+      alert(error.response?.data?.msg || "Login failed.");
     }
+  };
+
+  const handleGoogleSuccess = (response) => {
+    console.log('Google login success:', response);
+    // Handle Google login success (e.g., send token to backend)
+  };
+
+  const handleGoogleFailure = (error) => {
+    console.log('Google login error:', error);
+    // Handle Google login failure
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="card p-4 shadow" style={{ width: '450px', borderRadius: '15px' }}>
+        
+        {/* Home icon at the top right */}
+        <div className="d-flex justify-content-end mb-3">
+          <Link to="/" className="text-decoration-none">
+            <i
+              className="bi bi-house-door-fill"
+              style={{
+                fontSize: "2.5rem",
+                color: "#0d6efd",
+                transition: "color 0.3s",
+                cursor: "pointer"
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "#6610f2")}
+              onMouseLeave={(e) => (e.target.style.color = "#0d6efd")}
+              title="Go to Home"
+            ></i>
+          </Link>
+        </div>
+
         <h2 className="text-center mb-4">Login</h2>
+
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label>Email address <span className="text-danger">*</span></label>
@@ -67,6 +96,25 @@ const Login = () => {
             </Link>
           </p>
         </div>
+
+        {/* Divider */}
+        <div className="d-flex align-items-center my-3">
+          <hr className="flex-grow-1" />
+          <span className="px-2 text-muted">or</span>
+          <hr className="flex-grow-1" />
+        </div>
+
+        {/* Google Login */}
+        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleFailure}
+            width="100%"
+            size="large"
+            text="continue_with"
+            theme="outline"
+          />
+        </GoogleOAuthProvider>
       </div>
     </div>
   );
