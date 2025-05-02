@@ -26,7 +26,27 @@ function SignUp() {
   return (
     <div className="container mt-5 d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
       <div className="card p-4 shadow" style={{ width: "100%", maxWidth: "550px" }}>
+        
+        {/* Home icon at the top right */}
+        <div className="d-flex justify-content-end mb-3">
+          <Link to="/" className="text-decoration-none">
+            <i
+              className="bi bi-house-door-fill"
+              style={{
+                fontSize: "2.5rem",
+                color: "#0d6efd", // Bootstrap blue
+                transition: "color 0.3s",
+                cursor: "pointer"
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "#6610f2")} // Violet on hover
+              onMouseLeave={(e) => (e.target.style.color = "#0d6efd")} // Back to blue
+              title="Go to Home"
+            ></i>
+          </Link>
+        </div>
+
         <h2 className="text-center mb-4">Sign Up</h2>
+        
         <form onSubmit={handleSignUp}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">

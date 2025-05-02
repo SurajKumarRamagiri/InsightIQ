@@ -5,13 +5,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function LandingPage() {
   return (
     <div className="d-flex flex-column min-vh-100 bg-dark text-white">
+      {/* Navbar */}
       <nav className="d-flex justify-content-between align-items-center p-3">
         <h2 className="mb-0">InsightIQ</h2>
-        <Link to="/signup">
-          <button className="btn btn-primary">Get Started</button>
-        </Link>
+        <div>
+          <Link to="/login">
+            <button className="btn btn-outline-light me-2">Login</button>
+          </Link>
+          <Link to="/signup">
+            <button className="btn btn-primary">Get Started</button>
+          </Link>
+        </div>
       </nav>
 
+      {/* Hero Section */}
       <div className="text-center my-auto px-3">
         <h1 className="fw-bold mb-3">Learn Smarter with AI-Powered Insights</h1>
         <p className="lead mb-4">
@@ -22,6 +29,7 @@ function LandingPage() {
         </Link>
       </div>
 
+      {/* Features Section */}
       <div className="bg-secondary p-4 d-flex justify-content-around flex-wrap mt-auto">
         <div className="text-center p-3" style={{ maxWidth: "250px" }}>
           <i className="bi bi-file-earmark-text fs-2"></i>
