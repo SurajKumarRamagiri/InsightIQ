@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaCog, FaBars, FaSearch, FaBookOpen, FaTimes, FaArrowRight, FaSun, FaMoon } from 'react-icons/fa';
+import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaCog, FaBars,FaSearch, FaBookOpen, FaTimes ,FaArrowRight ,FaSun,FaMoon} from 'react-icons/fa';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Toast, ToastContainer } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom'; // Added useLocation and useNavigate
+import { Link } from 'react-router-dom'; // For navigation
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -42,7 +42,7 @@ const Dashboard = () => {
   };
 
   const menuItems = [
-    { label: 'Dashboard', icon: <FaBook />, path: '/Dashboard' },
+    { label: 'Dashboard', icon: <FaBook />, path: '/' },
     { label: 'My PDFs', icon: <FaFileAlt />, path: '/pdfs' },
     { label: 'Chat with Docs', icon: <FaBolt />, path: '/chat' },
     { label: 'Quizzes', icon: <FaQuestionCircle />, path: '/quizzes' },
@@ -53,16 +53,6 @@ const Dashboard = () => {
 
   // Icon size logic based on sidebar state (collapsed or expanded)
   const iconSize = sidebarOpen ? 30 : 20;
-
-  const location = useLocation(); // Hook to get current location
-  const navigate = useNavigate(); // Hook to navigate programmatically
-
-  const handleDashboardClick = () => {
-    // Check if already on the dashboard
-    if (location.pathname !== '/dashboard') {
-      navigate('/dashboard'); // Only navigate if not already on the dashboard
-    }
-  };
 
   return (
     <div className={`d-flex min-vh-100 ${darkMode ? 'bg-dark text-white' : 'bg-light text-dark'}`}>
@@ -93,11 +83,7 @@ const Dashboard = () => {
           <ul className="nav flex-column">
             {menuItems.map((item, i) => (
               <li className="nav-item mb-3" key={i}>
-                <Link
-                  to={item.path}
-                  className="nav-link text-white hover-effect d-flex align-items-center gap-2 justify-content-center justify-content-md-start"
-                  onClick={item.label === 'Dashboard' ? handleDashboardClick : null} // Add handler for dashboard click
-                >
+                <Link to={item.path} className="nav-link text-white hover-effect d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
                   {React.cloneElement(item.icon, { size: iconSize })}
                   <span className={`menu-item-label ${sidebarOpen ? 'd-inline' : 'd-none'}`}>{item.label}</span> {/* Show label only when expanded */}
                 </Link>
@@ -127,6 +113,7 @@ const Dashboard = () => {
     </button>
   </div>
 </div>
+
 
         {/* Stats */}
         <div className="row g-4 mb-4">
