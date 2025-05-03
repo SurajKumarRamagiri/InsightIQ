@@ -4,6 +4,8 @@ const documentSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   filename: { type: String, required: true },
   originalname: { type: String, required: true },
+  contentType: { type: String, required: true },
+  fileData: { type: Buffer, required: true },
   uploadDate: { type: Date, default: Date.now }
 });
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const Document = require('../models/Document');
 
 // Middleware to check authentication
 const authenticateToken = (req, res, next) => {
@@ -18,16 +19,7 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// Multer storage and file filter
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Ensure this directory exists or create it
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['.pdf', '.docx'];
@@ -42,12 +34,23 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter });
 
 // Upload route
-router.post('/', authenticateToken, upload.single('file'), (req, res) => {
+router.post('/', authenticateToken, upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded or invalid file type' });
   }
-  // Here you can save file info to DB if needed, associated with req.user.id
-  res.status(200).json({ message: 'File uploaded successfully', filename: req.file.filename });
+  try {
+    const newDocument = new Document({
+      user: req.user.id,
+      filename: req.file.filename || req.file.originalname,
+      originalname: req.file.originalname,
+      contentType: req.file.mimetype,
+      fileData: req.file.buffer
+    });
+    await newDocument.save();
+    res.status(200).json({ message: 'File uploaded and stored in database successfully', documentId: newDocument._id });
+  } catch (error) {
+    res.status(500).json({ message: 'Error saving file to database', error: error.message });
+  }
 });
 
 module.exports = router;
