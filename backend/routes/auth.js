@@ -6,6 +6,7 @@ const router = express.Router();
 require('dotenv').config();
 const clientId = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const jwt = require('jsonwebtoken');
 
 const client = new OAuth2Client(clientId,clientSecret,"http://localhost:3000"); // your Google client ID
 
@@ -43,7 +44,10 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid Credentials" });
 
-    res.status(200).json({ msg: "Login Successful", user });
+    // Generate JWT token
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ msg: "Login Successful", user, token: jwtToken });
   } catch (error) {
     res.status(500).send("Server Error");
   }
@@ -74,7 +78,10 @@ router.post('/google-login', async (req, res) => {
       await user.save();
     }
 
-    res.status(200).json({ msg: "Google Login Successful", user });
+    // Generate JWT token
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ msg: "Google Login Successful", user, token: jwtToken });
   } catch (error) {
     console.error(error);
     res.status(401).json({ msg: "Invalid Google token" });

@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaCog, FaBars,FaSearch, FaBookOpen, FaTimes ,FaArrowRight ,FaSun,FaMoon} from 'react-icons/fa';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import { Link } from 'react-router-dom'; // For navigation
+import axios from 'axios';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userData, setUserData] = useState({ name: '', email: '' });
 
   const stats = [
     { label: 'Documents', value: 12, color: 'primary' },
@@ -19,15 +22,63 @@ const Dashboard = () => {
     { label: 'Flashcards', value: 18, color: 'info' }
   ];
 
-  const handleUpload = () => {
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+  const fileInputRef = React.useRef(null);
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:5000/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (error) {
+      console.error('File upload failed:', error);
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 3000);
+    }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     window.location.href = '/login';
   };
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+    const fetchUserData = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/dashboard', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUserData({ name: res.data.name, email: res.data.email });
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const menuItems = [
     { label: 'Dashboard', icon: <FaBook />, path: '/' },
@@ -42,10 +93,31 @@ const Dashboard = () => {
   // Icon size logic based on sidebar state (collapsed or expanded)
   const iconSize = sidebarOpen ? 30 : 20;
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const res = await axios.get('http://localhost:5000/api/dashboard', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setUserData({ name: res.data.name, email: res.data.email });
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <div className={`d-flex min-vh-100 ${darkMode ? 'bg-dark text-white' : 'bg-light text-dark'}`}>
       
-      {/* Sidebar */}
+      {/* Sidebar */} 
       <div
         className={`sidebar shadow-sm d-flex flex-column justify-content-between 
         ${darkMode ? 'bg-secondary' : 'bg-primary'} ${sidebarOpen ? 'expanded' : 'collapsed'}`}
@@ -62,8 +134,8 @@ const Dashboard = () => {
           {sidebarOpen && (
             <div className="text-center mb-4">
               <FaUserCircle size={40} className="text-white" />
-              <h5 className="mt-2 text-white">Welcome</h5>
-              <p className="text-light small">you@example.com</p>
+              <h5 className="mt-2 text-white">Welcome, {userData.name}</h5>
+              <p className="text-light small">{userData.email}</p>
             </div>
           )}
 
@@ -180,7 +252,14 @@ const Dashboard = () => {
         <div className="card shadow-lg p-4 mb-4 rounded-4">
           <h5 className="fw-bold mb-3">Quick Actions</h5>
           <div className="d-flex flex-wrap gap-3">
-            <button className="btn btn-outline-primary rounded-pill px-4" onClick={handleUpload}>Upload PDF</button>
+            <button className="btn btn-outline-primary rounded-pill px-4" onClick={handleUploadClick}>Upload PDF</button>
+            <input
+              type="file"
+              accept=".pdf,.docx"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
             {['Start Chat', 'Generate Quiz', 'Review Flashcards'].map((label, i) => (
               <button key={i} className="btn btn-outline-primary rounded-pill px-4">{label}</button>
             ))}
@@ -197,14 +276,19 @@ const Dashboard = () => {
       {/* Toast */}
       <ToastContainer position="top-end" style={{ zIndex: 1050 }}>
         {showToast && (
-          <Toast>
+          <Toast bg="success" onClose={() => setShowToast(false)} delay={3000} autohide>
             <Toast.Body>Document uploaded successfully!</Toast.Body>
+          </Toast>
+        )}
+        {showErrorToast && (
+          <Toast bg="danger" onClose={() => setShowErrorToast(false)} delay={3000} autohide>
+            <Toast.Body>Failed to upload document. Please try again.</Toast.Body>
           </Toast>
         )}
       </ToastContainer>
 
       {/* Styles */}
-      <style jsx>{`
+      <style>{`
         .sidebar {
           transition: width 0.3s ease;
           overflow: hidden;

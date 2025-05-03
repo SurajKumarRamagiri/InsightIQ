@@ -11,16 +11,24 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/login', {
+      const res = await axios.post('http://localhost:5000/api/auth/login', {
         email,
         password,
       });
+  
+      // Print user data in console after login
+      console.log('User data after login:', res.data.user);
+  
+      // Save the token in localStorage
+      localStorage.setItem('token', res.data.token || res.data.user.token); // Store the token
+  
       alert("Login successful!");
       navigate('/dashboard'); // Redirect to dashboard on successful login
     } catch (error) {
       alert(error.response?.data?.msg || "Login failed.");
     }
   };
+  
 
 
   const handleGoogleSuccess = async (credentialResponse) => {
@@ -31,16 +39,19 @@ const Login = () => {
   
       console.log('User from server:', res.data.user);
   
-      // Optional: Save user _id for session reference
+      // Save the token in localStorage
+      localStorage.setItem('token', res.data.token); // Store the token
+  
+      // Optional: Save user _id for session reference (if needed)
       localStorage.setItem('userId', res.data.user._id);
   
-      window.location.href = '/dashboard';
-  
+      window.location.href = '/dashboard'; // Redirect to dashboard
     } catch (err) {
       console.error(err);
       alert('Google login failed');
     }
   };
+  
   
 
   const handleGoogleFailure = (error) => {
@@ -127,7 +138,7 @@ const Login = () => {
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleFailure}
               size="large"
-              text="continue_with"
+              text="Login_with"
               theme="outline"
               ux_mode="popup"
             />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 function SignUp() {
   const [name, setName] = useState('');
@@ -21,6 +22,32 @@ function SignUp() {
     } catch (error) {
       alert(error.response.data.msg || "Signup failed.");
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const token = credentialResponse.credential;
+
+      const res = await axios.post('http://localhost:5000/api/auth/google-login', { token });
+
+      console.log('User from server:', res.data.user);
+
+      // Save the token in localStorage
+      localStorage.setItem('token', res.data.token); // Store the token
+
+      // Optional: Save user _id for session reference (if needed)
+      localStorage.setItem('userId', res.data.user._id);
+
+      window.location.href = '/dashboard'; // Redirect to dashboard
+    } catch (err) {
+      console.error(err);
+      alert('Google login failed');
+    }
+  };
+
+  const handleGoogleFailure = (error) => {
+    console.log('Google login error:', error);
+    // Handle Google login failure
   };
 
   return (
@@ -105,6 +132,28 @@ function SignUp() {
             <Link to="/forgot-password">Forgot Password?</Link>
           </p>
         </form>
+
+        {/* Divider */}
+        <div className="d-flex align-items-center my-3">
+          <hr className="flex-grow-1" />
+          <span className="px-2 text-muted">or</span>
+          <hr className="flex-grow-1" />
+        </div>
+
+        {/* Google Login */}
+        <GoogleOAuthProvider clientId="564151031047-6r1gp0202r6u4afkhffi29qt28kabi1t.apps.googleusercontent.com">
+          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleFailure}
+              size="large"
+              text="signup_with"
+              theme="outline"
+              ux_mode="popup"
+            />
+          </div>
+        </GoogleOAuthProvider>
+
       </div>
     </div>
   );
