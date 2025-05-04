@@ -48,7 +48,7 @@ function LandingPage() {
           Upload study material, chat with your documents, and grow your knowledge intelligently with quizzes, flashcards, and concept maps.
         </p>
         <Link to="/signup">
-          <button className="btn btn-info btn-lg animate__animated animate__pulse animate__infinite">
+          <button className="btn btn-primary btn-lg animate__animated animate__pulse animate__infinite">
             ✨ Try InsightIQ Now
           </button>
         </Link>
@@ -64,7 +64,7 @@ function LandingPage() {
           <div className="w-100" style={{ maxWidth: '500px' }}>
             <form onSubmit={handleSubmit} className="animate__animated animate__fadeInUp">
               <div className="input-group mb-3">
-                <span className="input-group-text bg-info text-white">
+                <span className="input-group-text bg-primary text-white">
                   <i className="bi bi-chat-dots"></i>
                 </span>
                 <input
@@ -73,7 +73,7 @@ function LandingPage() {
                   className="form-control"
                   placeholder="Ask me anything about your study material..."
                 />
-                <button className="btn btn-info" type="submit">
+                <button className="btn btn-primary" type="submit">
                   Ask
                 </button>
               </div>
@@ -86,7 +86,7 @@ function LandingPage() {
             >
               {loading ? (
                 <div className="text-center">
-                  <div className="spinner-border text-info" role="status">
+                  <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">Loading...</span>
                   </div>
                   <p className="mt-2 mb-0">AI is thinking...</p>
@@ -100,7 +100,7 @@ function LandingPage() {
       </div>
 
       {/* Stats Counter Section */}
-      <div className="bg-info text-dark py-5 text-center">
+      <div className="bg-primary text-white py-5 text-center">
         <h3 className="mb-4 animate__animated animate__fadeIn">📊 Trusted by Thousands of Learners</h3>
         <div className="d-flex justify-content-around flex-wrap">
           <div className="p-3">
