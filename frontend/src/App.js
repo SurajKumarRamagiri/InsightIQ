@@ -9,6 +9,9 @@ import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import MyDocuments from './pages/MyDocuments';
+import ChatPage from './components/chat.jsx';
+
+
 
 function App() {
   return (
@@ -33,6 +36,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <MyDocuments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <ChatPage />
               </ProtectedRoute>
             }
           />

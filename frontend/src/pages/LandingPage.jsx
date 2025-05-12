@@ -191,13 +191,13 @@ function LandingPage() {
         <div className="container text-center">
           <p className="mb-0">© 2025 InsightIQ. All rights reserved.</p>
           <div className="mt-3">
-            <a href="#" className="text-white me-3">
+            <a href="/facebook" className="text-white me-3">
               <i className="bi bi-facebook"></i> Facebook
             </a>
-            <a href="#" className="text-white me-3">
+            <a href="/x" className="text-white me-3">
               <i className="bi bi-twitter"></i> Twitter
             </a>
-            <a href="#" className="text-white">
+            <a href="/linkedin" className="text-white">
               <i className="bi bi-linkedin"></i> LinkedIn
             </a>
           </div>

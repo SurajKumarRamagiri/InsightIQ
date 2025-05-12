@@ -53,4 +53,32 @@ router.post('/', authenticateToken, upload.single('file'), async (req, res) => {
   }
 });
 
+router.get('/', authenticateToken, async (req, res) => {
+  try {
+    const documents = await Document.find({ user: req.user.id }).select('-fileData');
+    res.status(200).json(documents);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching documents', error: error.message });
+  }
+});
+
+router.get('/download/:id', authenticateToken, async (req, res) => {
+  try {
+    const document = await Document.findById(req.params.id);
+    if (!document) {
+      return res.status(404).json({ message: 'Document not found' });
+    }
+    if (document.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    res.set({
+      'Content-Type': document.contentType,
+      'Content-Disposition': `attachment; filename="${document.originalname}"`
+    });
+    res.send(document.fileData);
+  } catch (error) {
+    res.status(500).json({ message: 'Error downloading file', error: error.message });
+  }
+});
+
 module.exports = router;

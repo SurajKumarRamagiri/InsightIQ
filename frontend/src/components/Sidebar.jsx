@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaCog, FaBars, FaSearch, FaBookOpen, FaTimes, FaSun, FaMoon, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle, FaBook, FaQuestionCircle, FaBolt, FaFileAlt, FaCog, FaBars, FaBookOpen, FaTimes, FaSun, FaMoon, FaSignOutAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -90,10 +90,11 @@ const Sidebar = ({ darkMode, setDarkMode }) => {
               ) : (
                 <button
                   className="btn btn-link nav-link text-white hover-effect d-flex align-items-center gap-2 justify-content-center justify-content-md-start p-0"
+                  style={{ minHeight: '1.5rem', display: 'flex', alignItems: 'center', paddingLeft: '0.5rem' }}
                   onClick={item.action}
                   type="button"
                 >
-                  {React.cloneElement(item.icon, { size: iconSize })}
+                  {React.cloneElement(item.icon, { size: iconSize, style: { minWidth: iconSize, minHeight: iconSize, display: 'inline-flex', verticalAlign: 'middle' } })}
                   <span className={`menu-item-label ${sidebarOpen ? 'd-inline' : 'd-none'}`}>{item.label}</span>
                 </button>
               )}

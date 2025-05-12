@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaSearch, FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar';

@@ -24,5 +24,8 @@ mongoose.connect(process.env.MONGO_URI)
 const dashboardRoute = require('./routes/dashboard');
 app.use('/api/dashboard', dashboardRoute); // Use the dashboard route
 
+const chatRoute = require('./routes/chat');
+app.use('/api/chat', chatRoute); // Use the chat route
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
