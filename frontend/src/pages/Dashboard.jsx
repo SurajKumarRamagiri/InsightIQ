@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaArrowRight } from 'react-icons/fa';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 
-const Dashboard = () => {
-  const [darkMode, setDarkMode] = useState(false);
+const Dashboard = ({ darkMode, setDarkMode }) => {
   const [showToast, setShowToast] = React.useState(false);
   const [showErrorToast, setShowErrorToast] = React.useState(false);
 

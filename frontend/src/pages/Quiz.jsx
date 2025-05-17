@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Sidebar from '../components/Sidebar';
 
-const Quiz = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
+const Quiz = ({ darkMode, setDarkMode }) => {
   return (
     <div className={`d-flex min-vh-100 ${darkMode ? 'bg-dark text-white' : 'bg-light text-dark'}`}>
       <Sidebar darkMode={darkMode} setDarkMode={setDarkMode} />

@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Sidebar from "./Sidebar";
 
-export default function ChatPage() {
-  const [darkMode, setDarkMode] = useState(false);
+export default function ChatPage({ darkMode, setDarkMode }) {
   const [messages, setMessages] = useState([
     { role: "ai", content: "Hello! How can I help you today?" }
   ]);
