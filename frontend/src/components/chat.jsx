@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Sidebar from "./Sidebar";
 
 export default function ChatPage() {
+  const [darkMode, setDarkMode] = useState(false);
   const [messages, setMessages] = useState([
     { role: "ai", content: "Hello! How can I help you today?" }
   ]);
@@ -56,10 +57,10 @@ export default function ChatPage() {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", backgroundColor: "#f5f7fa" }}>
-      <Sidebar />
-      <div style={{ flex: 1, padding: "20px", maxWidth: "700px", margin: "0 auto", display: "flex", flexDirection: "column", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "10px", backgroundColor: "white" }}>
-        <header style={{ padding: "10px 20px", borderBottom: "1px solid #e0e0e0", fontWeight: "600", fontSize: "1.5rem", color: "#333" }}>
+    <div className={`d-flex min-vh-100 ${darkMode ? 'bg-dark text-white' : 'bg-light text-dark'}`} style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
+      <Sidebar darkMode={darkMode} setDarkMode={setDarkMode} />
+      <div style={{ flex: 1, padding: "20px", maxWidth: "700px", margin: "0 auto", display: "flex", flexDirection: "column", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "10px", backgroundColor: darkMode ? '#343a40' : 'white' }}>
+        <header style={{ padding: "10px 20px", borderBottom: "1px solid #e0e0e0", fontWeight: "600", fontSize: "1.5rem", color: darkMode ? '#f8f9fa' : '#333' }}>
           Modern Chat Interface
         </header>
         <main style={{ flex: 1, overflowY: "auto", padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -122,8 +123,8 @@ export default function ChatPage() {
           </button>
         </form>
       </div>
-      <div style={{ width: "250px", borderLeft: "1px solid #ddd", backgroundColor: "#fff", padding: "20px", overflowY: "auto" }}>
-        <h3 style={{ marginBottom: "15px", fontWeight: "600", color: "#333" }}>Previous Chats</h3>
+      <div style={{ width: "250px", borderLeft: "1px solid #ddd", backgroundColor: darkMode ? '#212529' : '#fff', padding: "20px", overflowY: "auto" }}>
+        <h3 style={{ marginBottom: "15px", fontWeight: "600", color: darkMode ? '#f8f9fa' : '#333' }}>Previous Chats</h3>
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {previousChats.map((chat) => (
             <li key={chat.id} style={{ padding: "10px", borderBottom: "1px solid #eee", cursor: "pointer", color: "#007bff" }}>

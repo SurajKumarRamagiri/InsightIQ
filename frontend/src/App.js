@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import MyDocuments from './pages/MyDocuments';
 import ChatPage from './components/chat.jsx';
+import Quiz from './pages/Quiz';
 
 
 
@@ -44,6 +45,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quizzes"
+            element={
+              <ProtectedRoute>
+                <Quiz />
               </ProtectedRoute>
             }
           />
