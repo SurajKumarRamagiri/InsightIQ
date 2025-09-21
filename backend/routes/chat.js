@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const OpenAI = require("openai");
 require('dotenv').config();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+const { GoogleGenAI } = require('@google/genai');
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
 });
 
 // POST /api/chat
-// Accepts user message and returns AI response using OpenAI API
+// Accepts user message and returns AI response using Gemini API
 router.post('/', async (req, res) => {
   try {
     const { message } = req.body;
@@ -16,16 +16,17 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
+    // Using models.generateContent() as per the latest API
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',  // Change model as needed
+      contents: message,
     });
 
-    const aiResponse = completion.choices[0].message.content;
+    const aiResponse = response.text;
 
     res.json({ reply: aiResponse });
   } catch (error) {
-    console.error('Error in /api/chat:', error.response ? error.response.data : error.message);
+    console.error('Error in /api/chat:', error.response?.data ?? error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
