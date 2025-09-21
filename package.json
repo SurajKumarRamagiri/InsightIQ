@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "dev":"concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\""
+  },
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
