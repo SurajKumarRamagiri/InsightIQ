@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# InsightIQ
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+InsightIQ is a full-stack web application built with React (frontend) and Node.js/Express (backend) for document management, quizzes, and real-time chat powered by AI APIs such as Google's Gemini. It leverages MongoDB for data storage and JWT for secure authentication.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Description](#description)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Acknowledgments](#acknowledgments)
 
-### `npm start`
+## Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+InsightIQ is designed to provide users with an intelligent document management system combined with quiz and chat functionalities. It integrates modern AI services to enhance user interaction and data insights.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Features
 
-### `npm test`
+- User authentication and authorization via JWT
+- Document upload and management
+- Interactive quizzes for knowledge checks
+- AI-powered chat integration using Google Gemini API
+- Responsive and user-friendly UI built with React and React Bootstrap
+- Real-time analytics and charts with react-chartjs-2 and react-countup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (version 18 or higher recommended)
+- npm (v8+)
+- MongoDB instance or Atlas cluster
+- Google Gemini API key
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Steps
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone this repository:
 
-### `npm run eject`
+```
+git clone https://github.com/SurajKumarRamagiri/InsightIQ.git
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Navigate to the project root:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+cd InsightIQ
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Install all dependencies for frontend and backend:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+npm install
+```
 
-## Learn More
+4. Create a `.env` file in the project root and add the following environment variables:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+GEMINI_API_KEY=your_google_gemini_api_key
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. Start the entire project (frontend and backend concurrently):
 
-### Code Splitting
+```
+npm run dev
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+> Note: This assumes `concurrently` is configured to run both frontend and backend as per the workspace setup.
 
-### Analyzing the Bundle Size
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Open your browser and go to: `http://localhost:3000`
+- Register or log in to access the dashboard.
+- Upload and manage your documents.
+- Take quizzes to test your knowledge.
+- Use the chat feature powered by AI to ask questions or get assistance.
 
-### Making a Progressive Web App
+## Acknowledgments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- [React](https://reactjs.org/)
+- [React Bootstrap](https://react-bootstrap.github.io/)
+- [Mongoose](https://mongoosejs.com/)
+- [Google Gemini API](https://ai.google.com/gemini)
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- [react-chartjs-2](https://github.com/reactchartjs/react-chartjs-2)
+- [multer](https://github.com/expressjs/multer)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
